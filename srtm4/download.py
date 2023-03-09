@@ -14,6 +14,7 @@ import sys
 import os
 
 import requests
+from requests.auth import HTTPBasicAuth
 from requests.adapters import HTTPAdapter, Retry, RetryError
 import filelock
 
@@ -59,6 +60,7 @@ def download(to_file, from_url):
     # Use a requests session with retry logic because the server at
     # SRTM_URL sometimes returns 503 responses when overloaded
     session = _requests_retry_session()
+    
     r = session.get(from_url, stream=True, verify=False)
     if not r.ok:
         raise ConnectionError(
@@ -104,7 +106,7 @@ def get_srtm_tile(srtm_tile, out_dir):
     # download the zip file
     x, y = srtm_tile
     srtm_tile_url = f'{SRTM_URL}/{y}{x}.SRTMGL1.hgt.zip'
-    zip_path = os.path.join(output_dir, '{}.zip'.format(srtm_tile))
+    zip_path = os.path.join(output_dir, f'{y}_{x}.zip')
 
     lock_zip = filelock.FileLock(srtm_zip_download_lock)
     lock_zip.acquire()

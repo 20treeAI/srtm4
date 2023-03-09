@@ -85,7 +85,7 @@ def srtm4(lon, lat):
     """
     # get the names of srtm_tiles needed
     srtm_tiles = srtm4_which_tile(lon, lat)
-    srtm_tile_lon, srtm_tile_lat = tile_from_lon_latlon, lat)
+    srtm_tile_lon, srtm_tile_lat = tile_from_lon_lat(lon, lat)
     # download the tiles if not already there
     for srtm_tile in set(srtm_tiles):
         download.get_srtm_tile((srtm_tile_lon, srtm_tile_lat), SRTM_DIR)
